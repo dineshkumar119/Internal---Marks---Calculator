@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Internal Marks Calculator</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+
+    background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet);
+    background-size: 1400% 1400%;
+    animation: rainbow 10s infinite;
+}
+
+@keyframes rainbow {
+    0% {background-position:0%}
+    50% {background-position:100%}
+    100% {background-position:0%}
+}
+
+.container {
+    width: 90%;
+    margin: 30px auto;
+    text-align: center;
+}
+
+.box {
+    background: white;
+    padding: 25px;
+    width: 360px;
+    margin: auto;
+    border-radius: 15px;
+    box-shadow: 0 0 20px black;
+}
+
+h1 {
+    font-weight: bold;
+}
+
+input {
+    width: 85%;
+    padding: 10px;
+    margin: 8px;
+}
+
+button {
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.nav-btn {
+    background: black;
+    color: white;
+}
+
+.calc-btn {
+    background: linear-gradient(to right, blue, purple);
+    color: white;
+}
+
+.result {
+    color: green;
+    font-weight: bold;
+}
+
+.page {
+    display: none;
+}
+
+.active {
+    display: block;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>INTERNAL MARKS CALCULATOR</h1>
+
+<button class="nav-btn" onclick="showPage(1)">Theory</button>
+<button class="nav-btn" onclick="showPage(2)">Integrated + Lab</button>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page active">
+<div class="box">
+
+<h2>THEORY</h2>
+
+<input type="number" id="m1" placeholder="Mid 1 (out of 40)">
+<input type="number" id="m2" placeholder="Mid 2 (out of 40)">
+<input type="number" id="ass" placeholder="Assignment (out of 30)">
+
+<button class="calc-btn" onclick="calc1()">CALCULATE</button>
+
+<p class="result" id="res1"></p>
+
+</div>
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="page">
+<div class="box">
+
+<h2>INTEGRATED + LAB (TOTAL 40)</h2>
+
+<input type="number" id="im1" placeholder="Mid 1 (out of 40)">
+<input type="number" id="im2" placeholder="Mid 2 (out of 40)">
+<input type="number" id="record" placeholder="Record (out of 5)">
+<input type="number" id="lab" placeholder="Lab Exam (out of 5)">
+
+<button class="calc-btn" onclick="calc2()">CALCULATE</button>
+
+<p class="result" id="res2"></p>
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// Page switch
+function showPage(page){
+    document.getElementById("page1").classList.remove("active");
+    document.getElementById("page2").classList.remove("active");
+    document.getElementById("page" + page).classList.add("active");
+}
+
+// PAGE 1 LOGIC
+function calc1(){
+
+    let m1 = parseFloat(document.getElementById("m1").value);
+    let m2 = parseFloat(document.getElementById("m2").value);
+    let ass = parseFloat(document.getElementById("ass").value);
+
+    if (isNaN(m1) || isNaN(m2) || isNaN(ass)) {
+        alert("Enter all values");
+        return;
+    }
+
+    let d1 = m1 / 2;
+    let d2 = m2 / 2;
+
+    let high = Math.max(d1, d2);
+    let low = Math.min(d1, d2);
+
+    let mid = (0.8 * high) + (0.2 * low);
+
+    let assign = Math.round((ass / 30) * 10);
+
+    let total = mid + assign;
+
+    document.getElementById("res1").innerHTML =
+        "Mid = " + mid.toFixed(2) +
+        "<br>Assignment = " + assign +
+        "<br>Total = " + total.toFixed(2);
+}
+
+// PAGE 2 LOGIC (CORRECT FINAL)
+function calc2(){
+
+    let m1 = parseFloat(document.getElementById("im1").value);
+    let m2 = parseFloat(document.getElementById("im2").value);
+    let record = parseFloat(document.getElementById("record").value);
+    let lab = parseFloat(document.getElementById("lab").value);
+
+    if (isNaN(m1) || isNaN(m2) || isNaN(record) || isNaN(lab)) {
+        alert("Enter all values");
+        return;
+    }
+
+    if (m1 > 40 || m2 > 40 || record > 5 || lab > 5) {
+        alert("Enter valid marks!");
+        return;
+    }
+
+    // Multiply by 3/4
+    let t1 = m1 * (3/4);
+    let t2 = m2 * (3/4);
+
+    // Highest & Lowest
+    let high = Math.max(t1, t2);
+    let low = Math.min(t1, t2);
+
+    // 80% + 20%
+    let mid = (0.8 * high) + (0.2 * low);
+
+    // Lab
+    let labTotal = record + lab;
+
+    // Total
+    let total = mid + labTotal;
+
+    document.getElementById("res2").innerHTML =
+        "Mid (out of 30) = " + mid.toFixed(2) +
+        "<br>Lab (out of 10) = " + labTotal +
+        "<br><br>✅ TOTAL (out of 40) = " + total.toFixed(2);
+}
+
+</script>
+
+</body>
+</html>
